@@ -1,0 +1,18 @@
+global
+    daemon
+
+defaults
+    mode http
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http_front
+    bind *:80
+    bind *:443 ssl crt /etc/letsencrypt/live/www.ikuzwe.tech/ikuzwe.pem
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server web01 52.207.246.98:80 check
+    server web02 184.73.104.177:80 check

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Displays DNS information about subdomains
+
+domain=$1
+subdomain=$2
+
+get_dns_info() {
+    dig "$1.$domain" | awk '/ANSWER SECTION:/ {getline; print "The subdomain '"$1"' is a "$4" record and points to "$5}'
+}
+
+if [ -z "$subdomain" ]; then
+    get_dns_info www
+    get_dns_info lb-01
+    get_dns_info web-01
+    get_dns_info web-02
+else
+    get_dns_info "$subdomain"
+fi
